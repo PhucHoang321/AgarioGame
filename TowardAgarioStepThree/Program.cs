@@ -35,7 +35,7 @@ namespace TowardAgarioStepThree
         {
             await server.ConnectAsync("localhost", 11000);
             await server.HandleIncomingDataAsync(true);
-            await server.SendAsync(String.Format(Protocols.CMD_Start_Game, "Jim"));
+       
         }
 
         private void DisconnectedFromServer(Networking channel)
@@ -52,14 +52,14 @@ namespace TowardAgarioStepThree
         {
             if (message.StartsWith(Protocols.CMD_Food))
             {
-                Food fud = JsonSerializer.Deserialize<Food>(message) ?? throw new Exception("bad json");
-                Console.WriteLine($"Server Received: {fud.X}, {fud.Y}, {fud.ARGBcolor}, {fud.Mass}");
+                message = message[Protocols.CMD_Food.Length..]!;
+                Food[]? fud = JsonSerializer.Deserialize<Food[]>(message);
+                for(int i = 0; i < fud?.Length ; i++)
+                {
+                    Console.WriteLine($"Server Received: {fud?[i].X}, {fud?[i].Y}, {fud?[i].ARGBColor}, {fud?[i].Mass}");
+                }             
             }
-            else
-            {
-                // Handle other types of messages if needed
-                Console.WriteLine("Received unknown message: " + message);
-            }
+           
         }
 
     }
