@@ -20,7 +20,7 @@ namespace TowardAgarioStepThree
         public Program()
         {
             server = new Networking(NullLogger.Instance, ConnectedToServer,
-                                    DisconnectedFromServer, MessageFromServer);
+                                    DisconnectedFromServer, MessageFromServer) ;
         }
 
         public static void Main(string[] args)
