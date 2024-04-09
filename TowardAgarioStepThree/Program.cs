@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using TowardTowardAgarioStepThree;
 
@@ -16,7 +17,7 @@ namespace TowardAgarioStepThree
     class Program
     {
         private readonly Networking server;
-        private readonly List<Food> food = [];
+
         public Program()
         {
             server = new Networking(NullLogger.Instance, ConnectedToServer,
@@ -32,7 +33,9 @@ namespace TowardAgarioStepThree
 
         public async Task StartAsync()
         {
-            await server.ConnectAsync("2620:9b::190a:2685", 11000);
+            await server.ConnectAsync("localhost", 11000);
+            await server.HandleIncomingDataAsync(true);
+            await server.SendAsync(String.Format(Protocols.CMD_Start_Game, "Jim"));
         }
 
         private void DisconnectedFromServer(Networking channel)
@@ -43,7 +46,6 @@ namespace TowardAgarioStepThree
         private void ConnectedToServer(Networking channel)
         {
             Console.WriteLine("Connected to server.");
-            _ = server.HandleIncomingDataAsync(true);
         }
 
         private void MessageFromServer(Networking channel, string message)
