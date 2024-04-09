@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\assignment-seven-logging-and-networking-v_tekkkkk2\NetworkingLibrary\NetworkingLibrary.csproj" />
+    <ProjectReference Include="..\AgarioModels\AgarioModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Communications">
+      <HintPath>..\..\..\..\..\Downloads\Communications.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
