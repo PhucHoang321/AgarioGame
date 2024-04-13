@@ -21,7 +21,7 @@ namespace AgarioModels
     //An ARGBcolor - just for display purposes. ARGBs are integers.  
     //A mass - used to determine how big to draw the circle.  Mass is a float.
 
-    internal class GameObject
+    public class GameObject
     {
         public long ID { get; set; }
 

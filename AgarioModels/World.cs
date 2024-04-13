@@ -16,16 +16,13 @@ namespace AgarioModels
 
 //A logger object.
 
-    internal class World
+    public class World
     {
         public readonly int Width = 5000;
         public readonly int Height = 5000;
 
         private readonly Dictionary<long, Player> players;
         private readonly Dictionary<long, Food> foods;
-
-        public IReadOnlyCollection<Player> Players => players.Values;
-        public IReadOnlyCollection<Food> Foods => foods.Values;
 
         public World()
         {

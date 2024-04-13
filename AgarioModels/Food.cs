@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AgarioModels
 {
-    internal class Food: GameObject
+    public class Food: GameObject
     {
         public Food(long id, Vector2 location, int argbColor, float mass)
          : base(id, location, argbColor, mass)

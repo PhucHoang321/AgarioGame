@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AgarioModels
 {
-    internal class Player: GameObject
+    public class Player : GameObject
     {
         public string Name { get; }
         public Player(long id, Vector2 location, int argbColor, float mass, string name) : base(id, location, argbColor, mass)

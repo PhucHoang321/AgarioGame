@@ -16,6 +16,11 @@
             <StackLayout>
                 <!-- Add game UI elements here -->
                 <Label Text="Game Screen" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                <GraphicsView 
+                    x:Name="PlaySurface"
+                    VerticalOptions="Center"                     
+                    HeightRequest="500"
+                    WidthRequest="500" />
             </StackLayout>
         </Frame>
        
