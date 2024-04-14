@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +26,18 @@ namespace AgarioModels
         private Food[]? foods;
         private readonly Dictionary<long, Player> _players;
         private readonly Dictionary<long, Food> _foods;
+        private readonly ILogger _logger;
         public World()
         {
-         
+           
             _players = new Dictionary<long, Player>();
             _foods = new Dictionary<long, Food>();
         }
 
+        public Dictionary<long, Player> Players
+        {
+            get { return _players; }
+        }
         public void AddFood(string message)
         {
             message = message[Protocols.CMD_Food.Length..]!;
@@ -56,6 +62,18 @@ namespace AgarioModels
                 }
             }
         }
-       
+
+        public void RemoveFood(string message)
+        {
+            message = message[Protocols.CMD_Eaten_Food.Length..]!;
+            if(message != null)
+            {
+                long[] foodID = JsonSerializer.Deserialize<long[]>(message);
+                foreach (long ID in foodID)
+                {
+                    _foods.Remove(ID);
+                }
+            }          
+        }
     }
 }

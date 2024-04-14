@@ -56,18 +56,23 @@ namespace ClientGUI
         private async void StartGame_Clicked(object sender, EventArgs e)
         {
             await _client.ConnectAsync("localhost", 11000);
-            await _client.HandleIncomingDataAsync(true);
             // Hide the welcome screen
             WelcomeScreen.IsVisible = false;
-
             // Show the game screen
             GameScreen.IsVisible = true;
+
+            await _client.HandleIncomingDataAsync(true);
+          
+          
+
+         
         }
 
         private void OnMessage(Networking channel, string message)
         {
             try
             {
+               
                 if (message.StartsWith(Protocols.CMD_Food))
                 {
                     _world.AddFood(message);
@@ -75,6 +80,9 @@ namespace ClientGUI
                 else if (message.StartsWith(Protocols.CMD_Update_Players))
                 {
                     _world.AddPlayer(message);
+                }else if (message.StartsWith(Protocols.CMD_Eaten_Food)) 
+                {
+                    _world.RemoveFood(message);
                 }
             }
             catch (Exception ex) 
