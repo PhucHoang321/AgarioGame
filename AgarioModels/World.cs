@@ -24,7 +24,6 @@ namespace AgarioModels
 
         private readonly Dictionary<long, Player> _players;
         private readonly Dictionary<long, Food> _foods;
-        private World _world;
         public World()
         {
 
@@ -48,8 +47,10 @@ namespace AgarioModels
             Player[]? players = JsonSerializer.Deserialize<Player[]>(message);
             foreach (Player player in players)
             {
-                _players.Add(player.ID, player);
+                if (player.ID != null) { _players.Add(player.ID, player); }
+                //else { }
             }
         }
+        private void UpdatePlayer() { }
     }
 }

@@ -16,8 +16,6 @@ namespace ClientGUI
         private WorldDrawable worldDrawable;
         private System.Timers.Timer Timer;
         private readonly ILogger _logger;
-        private Dictionary<long, Food> _foods;
-        private Dictionary<long, Player> _players;
         public MainPage(ILogger<MainPage> logger)
         {
             _world = new World();

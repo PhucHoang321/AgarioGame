@@ -10,8 +10,8 @@ namespace AgarioModels
 {
     public class Food: GameObject
     {
-        public Food(long id, float x,float y, int argbColor, float mass)
-         : base(id, x, y, argbColor, mass)
+        public Food(float x,float y, int argbColor, long id, float mass)
+         : base(x, y, argbColor, id, mass)
         {
         }
     }

@@ -25,9 +25,9 @@ namespace AgarioModels
     public class GameObject
     {
         [JsonPropertyName("X")]
-        public float X;
+        public float X {  get; set; }
         [JsonPropertyName("Y")]
-        public float Y;
+        public float Y { get; set; }
         [JsonPropertyName("ID")]
         public long ID { get; set; }
         [JsonPropertyName("Mass")]
@@ -38,7 +38,8 @@ namespace AgarioModels
         public Vector2 Location { get; set; }
        
         public float Radius { get; set; }
-        public GameObject(long id,float x, float y, int argbColor, float mass)
+        // base(id, new Vector2(x, y), argbColor, mass)
+        public GameObject(float x,float y, int argbColor, long id, float mass)
         {
             X = x;
             Y = y;

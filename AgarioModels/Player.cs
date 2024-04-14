@@ -13,8 +13,8 @@ namespace AgarioModels
     {
         [JsonPropertyName("Name")]
         public string Name { get; }
-        public Player(string name, long id,float x, float y, int argbColor, float mass) : 
-            base(id, x, y, argbColor, mass)
+        public Player(string name, float x, float y, int argbColor, long id, float mass) : 
+            base(x, y, argbColor, id, mass)
         {
             Name = name;
         }
