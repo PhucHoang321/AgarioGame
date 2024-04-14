@@ -21,12 +21,13 @@ namespace AgarioModels
     {
         public readonly int Width = 5000;
         public readonly int Height = 5000;
-
+        private Player[]? players;
+        private Food[]? foods;
         private readonly Dictionary<long, Player> _players;
         private readonly Dictionary<long, Food> _foods;
         public World()
         {
-
+         
             _players = new Dictionary<long, Player>();
             _foods = new Dictionary<long, Food>();
         }
@@ -34,7 +35,7 @@ namespace AgarioModels
         public void AddFood(string message)
         {
             message = message[Protocols.CMD_Food.Length..]!;
-            Food[]? foods = JsonSerializer.Deserialize<Food[]>(message);
+            foods = JsonSerializer.Deserialize<Food[]>(message);
             foreach (Food food in foods)
             {
                 _foods.Add(food.ID, food);
@@ -44,13 +45,17 @@ namespace AgarioModels
         public void AddPlayer(string message)
         {
             message = message[Protocols.CMD_Update_Players.Length..]!;
-            Player[]? players = JsonSerializer.Deserialize<Player[]>(message);
+            players = JsonSerializer.Deserialize<Player[]>(message);
             foreach (Player player in players)
             {
-                if (player.ID != null) { _players.Add(player.ID, player); }
-                //else { }
+                if (!_players.ContainsKey(player.ID)) 
+                { 
+                    _players.Add(player.ID, player); 
+                }else {
+                    _players[player.ID] = player;
+                }
             }
         }
-        private void UpdatePlayer() { }
+       
     }
 }
