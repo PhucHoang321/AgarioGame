@@ -11,8 +11,10 @@ namespace AgarioModels
 {
     public class Player : GameObject
     {
+        [JsonPropertyName("Name")]
         public string Name { get; }
-        public Player(long id, Vector2 location, int argbColor, float mass, string name) : base(id, location, argbColor, mass)
+        public Player(string name, long id,float x, float y, int argbColor, float mass) : 
+            base(id, x, y, argbColor, mass)
         {
             Name = name;
         }

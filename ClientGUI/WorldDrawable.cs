@@ -9,6 +9,7 @@ namespace ClientGUI
 {
     public class WorldDrawable : IDrawable
     {
+     
         private readonly World _world;
         private readonly List<Player> players = [];
         public WorldDrawable(World world) 
@@ -25,6 +26,9 @@ namespace ClientGUI
         }
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
+            canvas.FillColor = Colors.Green;
+            canvas.FillRectangle(dirtyRect);
+         
             foreach (var player in players) {
                 ConvertFromWorldToScreen(player.X, player.Y, player.Mass,
                        out int screen_x, out int screen_y,
@@ -36,5 +40,6 @@ namespace ClientGUI
             }
             
         }
+
     }
 }

@@ -1,7 +1,9 @@
 ﻿using AgarioModels;
 using Communications;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls;
 using System.Diagnostics;
+using System.Text.Json;
 
 
 namespace ClientGUI
@@ -10,13 +12,15 @@ namespace ClientGUI
     {
         private Networking _client;
         private bool initialized;
-        World world;
+        private readonly World _world;
         private WorldDrawable worldDrawable;
         private System.Timers.Timer Timer;
         private readonly ILogger _logger;
+        private Dictionary<long, Food> _foods;
+        private Dictionary<long, Player> _players;
         public MainPage(ILogger<MainPage> logger)
         {
-            world = new World();
+            _world = new World();
             _logger = logger;
             _client = new Networking(logger, OnConnect, OnDisconnect, OnMessage);
             InitializeComponent();
@@ -39,7 +43,7 @@ namespace ClientGUI
 
         private void InitializeGameLogic()
         {
-            worldDrawable = new WorldDrawable(world);
+            worldDrawable = new WorldDrawable(_world);
             PlaySurface.Drawable = worldDrawable;
             Timer = new System.Timers.Timer(1000 / 60);
             Timer.Elapsed += (s, e) => GameStep();
@@ -51,10 +55,10 @@ namespace ClientGUI
             
         }
 
-        private void StartGame_Clicked(object sender, EventArgs e)
+        private async void StartGame_Clicked(object sender, EventArgs e)
         {
-            _client.ConnectAsync("192.168.50.201", 11000);
-
+            await _client.ConnectAsync("localhost", 11000);
+            await _client.HandleIncomingDataAsync(true);
             // Hide the welcome screen
             WelcomeScreen.IsVisible = false;
 
@@ -64,6 +68,21 @@ namespace ClientGUI
 
         private void OnMessage(Networking channel, string message)
         {
+            try
+            {
+                if (message.StartsWith(Protocols.CMD_Food))
+                {
+                    _world.AddFood(message);
+                }
+                else if (message.StartsWith(Protocols.CMD_Update_Players))
+                {
+                    _world.AddPlayer(message);
+                }
+            }
+            catch (Exception ex) 
+            { 
+                _logger.LogDebug(ex.Message, ex);
+            }
             
         }
 
@@ -76,7 +95,7 @@ namespace ClientGUI
         {
             // Send the player name to server
             string name = NameEntry.Text;
-            _client.SendAsync(String.Format(Protocols.CMD_Start_Game, name));
+            _client.SendAsync(String.Format(Protocols.CMD_Start_Game, "aun"));
         }
     }
 

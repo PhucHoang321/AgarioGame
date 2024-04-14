@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -23,20 +24,31 @@ namespace AgarioModels
 
     public class GameObject
     {
+        [JsonPropertyName("X")]
+        public float X;
+        [JsonPropertyName("Y")]
+        public float Y;
+        [JsonPropertyName("ID")]
         public long ID { get; set; }
-
+        [JsonPropertyName("Mass")]
         public float Mass { get; private set; }
+        [JsonPropertyName("ARGBColor")]
         public int ARGBColor { get; set; }
+        
         public Vector2 Location { get; set; }
-
-        public GameObject(long id, Vector2 location, int argbColor, float mass)
+       
+        public float Radius { get; set; }
+        public GameObject(long id,float x, float y, int argbColor, float mass)
         {
+            X = x;
+            Y = y;
             ID = id;
-            Location = location;
+            Location = new Vector2(X, Y);
             Mass = mass;
             ARGBColor = argbColor;
+            Radius = 20;//todo radius
         }
-        public float X => Location.X;
-        public float Y => Location.Y;
+
+       
     }
 }
