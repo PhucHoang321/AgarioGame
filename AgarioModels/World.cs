@@ -38,6 +38,11 @@ namespace AgarioModels
         {
             get { return _players; }
         }
+
+        public Dictionary<long, Food>? Foods {
+            get { return _foods; } 
+        }
+
         public void AddFood(string message)
         {
             message = message[Protocols.CMD_Food.Length..]!;

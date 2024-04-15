@@ -61,12 +61,9 @@ namespace ClientGUI
             // Show the game screen
             GameScreen.IsVisible = true;
 
-            await _client.HandleIncomingDataAsync(true);
-          
-          
-
-         
+            await _client.HandleIncomingDataAsync(true);       
         }
+    
 
         private void OnMessage(Networking channel, string message)
         {

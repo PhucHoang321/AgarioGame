@@ -1,9 +1,5 @@
 ﻿
 using AgarioModels;
-using Microsoft.Maui.Graphics;
-
-
-
 namespace ClientGUI
 {
     public class WorldDrawable : IDrawable
@@ -11,12 +7,14 @@ namespace ClientGUI
         
         private readonly World _world;
         private readonly Dictionary<long, Player> _players;
-        private readonly GraphicsView gv;
+        private readonly Dictionary<long, Food> _foods;
+        private readonly GraphicsView PlaySurface;
         public WorldDrawable(World world, GraphicsView gv) 
         { 
             _world = world;
             _players = world.Players;
-            this.gv = gv;
+            _foods = world.Foods;
+            PlaySurface = gv;
         }
         private void ConvertFromWorldToScreen(
                 in float worldX, in float worldY, in float worldMass,
@@ -24,7 +22,7 @@ namespace ClientGUI
         {
             screenX = (int)( 500 * worldX / _world.Width);
             screenY = (int)( 500 * worldY / _world.Height);   
-            playerMass = (int)(50);   
+            playerMass = (int)(5);   
         }
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
@@ -49,10 +47,27 @@ namespace ClientGUI
                 // Draw player is name
                 canvas.DrawString(player.Value.Name, screen_x, screen_y, HorizontalAlignment.Center);
             }
-            gv.Invalidate();
+
+            foreach(var food in _foods)
+            {
+                ConvertFromWorldToScreen(food.Value.X, food.Value.Y, food.Value.Mass,
+                      out int screen_x, out int screen_y,
+                      out int foodMass);
+                canvas.StrokeColor = Colors.Black;
+                canvas.DrawCircle(screen_x, screen_y, foodMass);
+                int argbColor = food.Value.ARGBColor;
+                Color fillColor = ConvertArgbToColor(argbColor);
+                canvas.FillColor = fillColor;
+                canvas.FillCircle(screen_x, screen_y, foodMass);
+            }
+
+            PlaySurface.Invalidate();
         }
+
+
+
         // Private method to convert into color
-        private Color ConvertArgbToColor(int argbColor)
+        private static Color ConvertArgbToColor(int argbColor)
         {
             // Extract individual color components from the ARGB integer
             int alpha = (argbColor >> 24) & 0xFF; 
@@ -64,6 +79,20 @@ namespace ClientGUI
             Color color = Color.FromRgba(alpha, red, green, blue);
 
             return color;
+        }
+
+     
+
+      
+
+        public void PointerChanged(object sender,PointerEventArgs e)
+        {
+            Point? pointerPosition = e.GetPosition(PlaySurface);
+            float mouseX = (float)pointerPosition.Value.X;
+            float mouseY = (float)pointerPosition.Value.Y;
+
+            //TODO MOVE CLIENT TO THE MOUSE POINTER
+
         }
     }
 }
