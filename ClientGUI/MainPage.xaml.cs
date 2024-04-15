@@ -41,7 +41,7 @@ namespace ClientGUI
 
         private void InitializeGameLogic()
         {
-            worldDrawable = new WorldDrawable(_world);
+            worldDrawable = new WorldDrawable(_world, PlaySurface);
             PlaySurface.Drawable = worldDrawable;
             Timer = new System.Timers.Timer(1000 / 60);
             Timer.Elapsed += (s, e) => GameStep();
