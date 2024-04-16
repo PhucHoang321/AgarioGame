@@ -48,20 +48,18 @@ namespace ClientGUI
                 canvas.DrawString(player.Value.Name, screen_x, screen_y, HorizontalAlignment.Center);
             }
 
-            foreach(var food in _foods)
-            {
-                ConvertFromWorldToScreen(food.Value.X, food.Value.Y, food.Value.Mass,
-                      out int screen_x, out int screen_y,
-                      out int foodMass);
-                canvas.StrokeColor = Colors.Black;
-                canvas.DrawCircle(screen_x, screen_y, foodMass);
-                int argbColor = food.Value.ARGBColor;
-                Color fillColor = ConvertArgbToColor(argbColor);
-                canvas.FillColor = fillColor;
-                canvas.FillCircle(screen_x, screen_y, foodMass);
-            }
-
-            PlaySurface.Invalidate();
+            //foreach(var food in _foods)
+            //{
+            //    ConvertFromWorldToScreen(food.Value.X, food.Value.Y, food.Value.Mass,
+            //          out int screen_x, out int screen_y,
+            //          out int foodMass);
+            //    canvas.StrokeColor = Colors.Black;
+            //    canvas.DrawCircle(screen_x, screen_y, foodMass);
+            //    int argbColor = food.Value.ARGBColor;
+            //    Color fillColor = ConvertArgbToColor(argbColor);
+            //    canvas.FillColor = fillColor;
+            //    canvas.FillCircle(screen_x, screen_y, foodMass);
+            //}
         }
 
 

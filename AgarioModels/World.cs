@@ -80,5 +80,29 @@ namespace AgarioModels
                 }
             }          
         }
+        // Get my player
+        public Player? GetPlayerById(long playerId)
+        {
+            if (_players.TryGetValue(playerId, out Player player))
+            {
+                return player;
+            }
+            return null; // Player not found with the specified ID
+        }
+        // Update the player position
+        public void UpdatePlayerPosition(long playerId, float newX, float newY)
+        {
+            if (_players.TryGetValue(playerId, out Player player))
+            {
+                // Update the player's position
+                player.X = newX;
+                player.Y = newY;
+            }
+            else
+            {
+                // Player not found with the specified ID
+                _logger.LogWarning($"Player with ID {playerId} not found.");
+            }
+        }
     }
 }

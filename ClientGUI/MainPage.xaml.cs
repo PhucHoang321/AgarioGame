@@ -50,9 +50,26 @@ namespace ClientGUI
 
         private void GameStep()
         {
+            Dispatcher.Dispatch(() =>
+            {
+                PlaySurface.Invalidate();
+            });
+        }
+        private void PointerChanged(object sender, PointerEventArgs e)
+        {
+            Point pointerPosition = (Point)e.GetPosition(this);
+            int x = (int)pointerPosition.X;
+            int y = (int)pointerPosition.Y;
+            _client.SendAsync(String.Format(Protocols.CMD_Move, x, y));
+        }
+        private void OnTap(object sender, EventArgs e) 
+        { 
             
         }
-
+        private void PanUpdated(object sender, EventArgs e) 
+        {
+            
+        }
         private async void StartGame_Clicked(object sender, EventArgs e)
         {
             await _client.ConnectAsync("localhost", 11000);
@@ -98,7 +115,7 @@ namespace ClientGUI
         {
             // Send the player name to server
             string name = NameEntry.Text;
-            _client.SendAsync(String.Format(Protocols.CMD_Start_Game, "aun"));
+            _client.SendAsync(String.Format(Protocols.CMD_Start_Game, "HIKINEET"));
         }
     }
 
