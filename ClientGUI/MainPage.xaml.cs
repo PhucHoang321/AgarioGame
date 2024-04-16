@@ -57,10 +57,12 @@ namespace ClientGUI
         }
         private void PointerChanged(object sender, PointerEventArgs e)
         {
-            Point pointerPosition = (Point)e.GetPosition(this);
-            int x = (int)pointerPosition.X;
-            int y = (int)pointerPosition.Y;
-            _client.SendAsync(String.Format(Protocols.CMD_Move, x, y));
+            Point pointerPosition = (Point)e.GetPosition(PlaySurface);
+
+            float gameX = (float)pointerPosition.X * (float)_world.Width / (float)PlaySurface.Width;
+            float gameY = (float)pointerPosition.Y * (float)_world.Height / (float)PlaySurface.Height;
+
+            _client.SendAsync(String.Format(Protocols.CMD_Move, (int)gameX, (int)gameY));
         }
         private void OnTap(object sender, EventArgs e) 
         { 
