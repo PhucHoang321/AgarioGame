@@ -1,15 +1,20 @@
 ﻿using AgarioModels;
+
 using Communications;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
 using System.Text.Json;
+using System.Text.RegularExpressions;
+
 
 
 namespace ClientGUI
 {
     public partial class MainPage : ContentPage
     {
+        public long _localID;
         private Networking _client;
         private bool initialized;
         private readonly World _world;
@@ -99,6 +104,11 @@ namespace ClientGUI
                 }else if (message.StartsWith(Protocols.CMD_Eaten_Food)) 
                 {
                     _world.RemoveFood(message);
+                }else if (message.StartsWith(Protocols.CMD_Player_Object)) 
+                {
+                    string numberPart = Regex.Match(message, @"\d+").Value;
+                    _localID = long.Parse(numberPart);
+
                 }
             }
             catch (Exception ex) 

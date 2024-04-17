@@ -1,16 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static System.Formats.Asn1.AsnWriter;
+using System.Text.RegularExpressions;
 
-namespace AgarioModels
-{
+namespace AgarioModels {
     //the world Width and Height(please use read only 'constants') defaulting to 5000 by 5000
     //A list of players in the game.
     //A list of food in the game.
@@ -104,5 +96,6 @@ namespace AgarioModels
                 _logger.LogWarning($"Player with ID {playerId} not found.");
             }
         }
+
     }
 }

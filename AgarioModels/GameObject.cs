@@ -37,7 +37,8 @@ namespace AgarioModels
         
         public Vector2 Location { get; set; }
        
-        public float Radius { get; set; }
+        public float Radius { get; set; }   
+        
         // base(id, new Vector2(x, y), argbColor, mass)
         public GameObject(float x,float y, int argbColor, long id, float mass)
         {
@@ -47,7 +48,7 @@ namespace AgarioModels
             Location = new Vector2(X, Y);
             Mass = mass;
             ARGBColor = argbColor;
-            Radius = 20;//todo radius
+            Radius = (float) Math.Sqrt(Mass / Math.PI);
         }
 
        
