@@ -15,6 +15,7 @@ namespace ClientGUI
     public partial class MainPage : ContentPage
     {
         public long _localID;
+      
         private Networking _client;
         private bool initialized;
         private readonly World _world;
@@ -108,7 +109,7 @@ namespace ClientGUI
                 {
                     string numberPart = Regex.Match(message, @"\d+").Value;
                     _localID = long.Parse(numberPart);
-
+                    _world.LocalID(_localID);
                 }
             }
             catch (Exception ex) 

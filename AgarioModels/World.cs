@@ -26,6 +26,9 @@ namespace AgarioModels {
             _foods = new Dictionary<long, Food>();
         }
 
+        
+
+
         public Dictionary<long, Player> Players
         {
             get { return _players; }
@@ -73,13 +76,9 @@ namespace AgarioModels {
             }          
         }
         // Get my player
-        public Player? GetPlayerById(long playerId)
+        public long LocalID(long playerId)
         {
-            if (_players.TryGetValue(playerId, out Player player))
-            {
-                return player;
-            }
-            return null; // Player not found with the specified ID
+            return playerId;
         }
         // Update the player position
         public void UpdatePlayerPosition(long playerId, float newX, float newY)
