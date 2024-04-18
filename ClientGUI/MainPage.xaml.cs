@@ -107,9 +107,7 @@ namespace ClientGUI
                     _world.RemoveFood(message);
                 }else if (message.StartsWith(Protocols.CMD_Player_Object)) 
                 {
-                    string numberPart = Regex.Match(message, @"\d+").Value;
-                    _localID = long.Parse(numberPart);
-                    _world.LocalID(_localID);
+                    _world.clientID = long.Parse(message[Protocols.CMD_Player_Object.Length..]);
                 }
             }
             catch (Exception ex) 
@@ -118,7 +116,10 @@ namespace ClientGUI
             }
             
         }
-
+        public long GetLocalID()
+        {
+            return _localID;
+        }
         private void OnDisconnect(Networking channel)
         {
         

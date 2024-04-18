@@ -12,10 +12,12 @@ namespace AgarioModels {
 
     public class World
     {
+        public long clientID;
         public readonly int Width = 5000;
         public readonly int Height = 5000;
         private Player[]? players;
         private Food[]? foods;
+      
         private readonly Dictionary<long, Player> _players;
         private readonly Dictionary<long, Food> _foods;
         private readonly ILogger _logger;
@@ -75,11 +77,7 @@ namespace AgarioModels {
                 }
             }          
         }
-        // Get my player
-        public long LocalID(long playerId)
-        {
-            return playerId;
-        }
+      
         // Update the player position
         public void UpdatePlayerPosition(long playerId, float newX, float newY)
         {
