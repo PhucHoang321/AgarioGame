@@ -51,29 +51,30 @@ namespace ClientGUI
             //draw player 
             foreach (var player in _players)
             {
-                float playerX = player.Value.Location.X ;
-                float playerY = player.Value.Location.Y;
-                float playerRadius = player.Value.Radius;
-
-                if (player.Value.X > leftBound
-                    && player.Value.X < rightBound
-                    && player.Value.Y < bottomBound
-                    && player.Value.Y > topBound)
+                if (!player.Value.isDead)
                 {
-                    float xOffset = playerX - leftBound;
-                    float yOffset = playerY - topBound;
-                    float xRatio = xOffset / viewPortWidth;
-                    float yRatio = yOffset / viewPortWidth;
-                   
+                    float playerX = player.Value.Location.X;
+                    float playerY = player.Value.Location.Y;
+                    float playerRadius = player.Value.Radius;
 
-                    canvas.FillColor = Color.FromInt(player.Value.ARGBColor);
-                    canvas.FillCircle( xRatio * screenW, yRatio * screenH, playerRadius * screenW / viewPortWidth);
-                    canvas.FontColor = Colors.Black;
-                    canvas.DrawString(player.Value.Name, xRatio * screenW, yRatio * screenH, HorizontalAlignment.Center);
+                    if (player.Value.X > leftBound
+                        && player.Value.X < rightBound
+                        && player.Value.Y < bottomBound
+                        && player.Value.Y > topBound)
+                    {
+                        float xOffset = playerX - leftBound;
+                        float yOffset = playerY - topBound;
+                        float xRatio = xOffset / viewPortWidth;
+                        float yRatio = yOffset / viewPortWidth;
 
-                }
 
-              
+                        canvas.FillColor = Color.FromInt(player.Value.ARGBColor);
+                        canvas.FillCircle(xRatio * screenW, yRatio * screenH, playerRadius * screenW / viewPortWidth);
+                        canvas.FontColor = Colors.Black;
+                        canvas.DrawString(player.Value.Name, xRatio * screenW, yRatio * screenH, HorizontalAlignment.Center);
+
+                    }
+                }                            
             }
 
             //draw food

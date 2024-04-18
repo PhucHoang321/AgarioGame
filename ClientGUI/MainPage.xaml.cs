@@ -108,6 +108,9 @@ namespace ClientGUI
                 }else if (message.StartsWith(Protocols.CMD_Player_Object)) 
                 {
                     _world.clientID = long.Parse(message[Protocols.CMD_Player_Object.Length..]);
+                }else if (message.StartsWith(Protocols.CMD_Dead_Players))
+                {
+                    _world.RemovePlayer(message);
                 }
             }
             catch (Exception ex) 

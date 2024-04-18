@@ -21,6 +21,7 @@ namespace AgarioModels {
         private readonly Dictionary<long, Player> _players;
         private readonly Dictionary<long, Food> _foods;
         private readonly ILogger _logger;
+        
         public World()
         {
            
@@ -94,5 +95,23 @@ namespace AgarioModels {
             }
         }
 
+        public void RemovePlayer(string message)
+        {
+            message = message[Protocols.CMD_Dead_Players.Length..]!;
+            long[]? idDead = JsonSerializer.Deserialize<long[]>(message);
+            if(idDead != null)
+            {
+                foreach (long id in idDead)
+                {
+                    if (_players.ContainsKey(id))
+                    {
+                        _players[id].isDead = true;
+                    }
+                }
+            }
+          
+
+
+        }
     }
 }
