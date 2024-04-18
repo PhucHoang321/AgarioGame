@@ -5,6 +5,7 @@ using Communications;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls;
 using System.Diagnostics;
+using System.Security.Principal;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -15,7 +16,7 @@ namespace ClientGUI
     public partial class MainPage : ContentPage
     {
         public long _localID;
-      
+        public float _zoomScale;
         private Networking _client;
         private bool initialized;
         private readonly World _world;
@@ -76,7 +77,23 @@ namespace ClientGUI
         }
         private void PanUpdated(object sender, EventArgs e) 
         {
-            
+            //PanUpdatedEventArgs panEvent = (PanUpdatedEventArgs)e;
+
+            //// Check the total distance traveled in the X and Y directions
+            //double totalX = panEvent.TotalX;
+            //double totalY = panEvent.TotalY;
+
+            //// Adjust zoom scale based on the pan gesture
+            //_zoomScale += (float)(totalX * 0.1); // You can adjust the sensitivity of zooming
+
+            //// Ensure the zoom scale doesn't go below a certain threshold (e.g., minimum zoom)
+            //if (_zoomScale < 1)
+            //{
+            //    _zoomScale = 1;
+            //}
+
+            //// Redraw the graphics with the updated zoom scale
+            //PlaySurface.Invalidate();
         }
         private async void StartGame_Clicked(object sender, EventArgs e)
         {
@@ -111,6 +128,7 @@ namespace ClientGUI
                 }else if (message.StartsWith(Protocols.CMD_Dead_Players))
                 {
                     _world.RemovePlayer(message);
+                    _client.Disconnect();
                 }
             }
             catch (Exception ex) 
@@ -125,7 +143,8 @@ namespace ClientGUI
         }
         private void OnDisconnect(Networking channel)
         {
-        
+            WelcomeScreen.IsVisible = true;
+            GameScreen.IsVisible = false;
         }
 
         private void OnConnect(Networking channel)

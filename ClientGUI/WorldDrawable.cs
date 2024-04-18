@@ -14,7 +14,7 @@ namespace ClientGUI
         private readonly GraphicsView PlaySurface;
     
 
-        private readonly float _zoomScale = 20;
+        public float _zoomScale = 40;
 
         public WorldDrawable(World world, GraphicsView gv)
         {

@@ -1,21 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ClientGUI.MainPage">
+             x:Class="ClientGUI.MainPage" Background="Black" 
+             >
     <StackLayout Margin="20">
 
-        <Frame x:Name="WelcomeScreen" BackgroundColor="LightGray" WidthRequest="1004" HeightRequest="500">
+        <Frame x:Name="WelcomeScreen" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <StackLayout VerticalOptions="CenterAndExpand"  IsVisible="True" >
-                <Label Text="Welcome to the Game" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
-                <Entry BackgroundColor="Beige" Placeholder="Enter your name" x:Name="NameEntry" />
-                <Entry BackgroundColor="Beige" Placeholder="Enter host address" x:Name="HostEntry" />
+                <Label FontSize= "40" TextColor= "Black" FontAttributes="Bold" Text="AGARIO" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                <Entry BackgroundColor="Beige" Placeholder="Enter your name" x:Name="NameEntry" TextColor="Black"/>
+                <Entry BackgroundColor="Beige" Placeholder="Enter host address" x:Name="HostEntry" TextColor="Black"/>
                 <Button Text="Start Game" Clicked="StartGame_Clicked" />
             </StackLayout>
         </Frame>
         <Frame  x:Name="GameScreen" IsVisible="False" Padding="5">
-            <StackLayout>
+            <StackLayout VerticalOptions="CenterAndExpand">
                 <!-- Add game UI elements here -->
-                <Label Text="Game Screen" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                <Label Text="Game Screen" HorizontalOptions="Center" />
                 <GraphicsView 
                     x:Name="PlaySurface"
                     VerticalOptions="Center"                     
