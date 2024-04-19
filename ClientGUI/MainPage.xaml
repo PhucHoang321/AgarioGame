@@ -9,7 +9,7 @@
             <StackLayout VerticalOptions="Center"  IsVisible="True" >
                 <Label FontSize= "40" TextColor= "Black" FontAttributes="Bold" Text="AGARIO" HorizontalOptions="Center"  FontFamily=""  />
                 <Entry WidthRequest="300" BackgroundColor="Beige" Placeholder="Enter your name" x:Name="NameEntry" TextColor="Black"/>
-                <Entry WidthRequest="300" BackgroundColor="Beige" Placeholder="Enter host address" x:Name="HostEntry" TextColor="Black"/>
+                <Entry WidthRequest="300" BackgroundColor="Beige" Text="localhost" x:Name="HostEntry" TextColor="Black"/>
                 <Button  WidthRequest="300" Text="Start Game" Clicked="StartGame_Clicked" />
                 <ActivityIndicator 
                         x:Name="Spinner"

@@ -1,45 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
+﻿using System.Numerics;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
 namespace AgarioModels
 {
-    //A unique id number.This value should be a long integer.
-    //The location of the game object in the world (x, y). (e.g., 205.6, 199.9)
-    //I suggest using a built-in type(e.g., System.Numerics.Vector2).  Read up on this library.
-    //It is likely one you will use in many future projects.
 
-    //Note: the position represents the center of the object (e.g., center or the circle). 
-    //X and Y properties for the game object (which do not have setters) that return the appropriate location value.
-    //These should reference the location value above.
-
-    //An ARGBcolor - just for display purposes. ARGBs are integers.  
-    //A mass - used to determine how big to draw the circle.  Mass is a float.
-
+    /// <summary>
+    /// Represents a game object with position, color, and mass.
+    /// </summary>
     public class GameObject
     {
+        /// <summary>
+        /// Gets the X-coordinate of the object.
+        /// </summary>
         [JsonPropertyName("X")]
-        public float X {  get; set; }
+        public float X { get;  }
+
+        /// <summary>
+        /// Gets the Y-coordinate of the object.
+        /// </summary>
         [JsonPropertyName("Y")]
-        public float Y { get; set; }
+        public float Y { get; }
+
+        /// <summary>
+        /// Gets or sets the unique ID of the object.
+        /// </summary>
         [JsonPropertyName("ID")]
         public long ID { get; set; }
-        [JsonPropertyName("Mass")]
+
+        /// <summary>
+        /// Gets the mass of the object.
+        /// </summary>
+        [JsonPropertyName("Mass")]     
         public float Mass { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the color of the object in ARGB format.
+        /// </summary>
         [JsonPropertyName("ARGBColor")]
         public int ARGBColor { get; set; }
-        
+
+        /// <summary>
+        /// Gets or sets the location of the object.
+        /// </summary>
         public Vector2 Location { get; set; }
-       
-        public float Radius { get; set; }   
-        
-        // base(id, new Vector2(x, y), argbColor, mass)
+
+        /// <summary>
+        /// Gets or sets the radius of the object.
+        /// </summary>
+        public float Radius { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the GameObject class with the specified parameters.
+        /// </summary>
+        /// <param name="x">The X-coordinate of the object.</param>
+        /// <param name="y">The Y-coordinate of the object.</param>
+        /// <param name="argbColor">The color of the object in ARGB format.</param>
+        /// <param name="id">The unique identifier of the object.</param>
+        /// <param name="mass">The mass of the object.</param>
         public GameObject(float x,float y, int argbColor, long id, float mass)
         {
             X = x;
