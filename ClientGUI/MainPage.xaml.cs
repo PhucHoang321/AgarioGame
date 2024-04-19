@@ -51,6 +51,7 @@ namespace ClientGUI
             worldDrawable = new WorldDrawable(_world, PlaySurface);
             PlaySurface.Drawable = worldDrawable;
             Timer = new System.Timers.Timer(1000 / 30);
+               Timer.Interval = TargetFPS;
             Timer.Elapsed += (s, e) => GameStep();
             Timer.Start();
         }
@@ -60,7 +61,7 @@ namespace ClientGUI
             Dispatcher.Dispatch(() =>
             {
                 PlaySurface.Invalidate();
-                fps.Text = "FPS: " + Timer.ToString();
+                fps.Text = "FPS: " + Timer.Interval;
             });
 
         }
@@ -77,7 +78,7 @@ namespace ClientGUI
 
         private void OnTap(object sender, EventArgs e) 
         { 
-            
+             _client.SendAsync(String.Format(Protocols.CMD_Split, this.X, this.Y));
         }
         private void PanUpdated(object sender, PanUpdatedEventArgs e) 
         {
@@ -100,10 +101,12 @@ namespace ClientGUI
         }
         private async void StartGame_Clicked(object sender, EventArgs e)
         {
+             Spinner.IsVisible = true;
             await _client.ConnectAsync("localhost", 11000);
             // Hide the welcome screen
             WelcomeScreen.IsVisible = false;
             // Show the game screen
+              Spinner.IsVisible = false;
             GameScreen.IsVisible = true;
 
             await _client.HandleIncomingDataAsync(true);       
@@ -136,6 +139,14 @@ namespace ClientGUI
 
                     if (_world.Players[_world.clientID].isDead) { _client.Disconnect(); }
                     
+                }else if (message.StartsWith(Protocols.CMD_HeartBeat))
+                {
+                    message = message[Protocols.CMD_HeartBeat.Length..];
+                    Dispatcher.Dispatch(() =>
+                    {
+                        hb.Text = "Heartbeat: " + message;
+                    });
+                
                 }
                 Dispatcher.Dispatch(() =>
                 {
