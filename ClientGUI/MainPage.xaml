@@ -17,11 +17,15 @@
             <StackLayout VerticalOptions="CenterAndExpand">
                 <!-- Add game UI elements here -->
                 <Label Text="Game Screen" HorizontalOptions="Center" />
+                <Label x:Name="Mass" TextColor="White" HorizontalOptions="Center"></Label>
+                <Label x:Name="hb" TextColor="AliceBlue" HorizontalOptions="Center"/>
+                <Label x:Name="fps"    TextColor="AliceBlue" HorizontalOptions="Center"/>
+                
                 <GraphicsView 
                     x:Name="PlaySurface"
                     VerticalOptions="Center"                     
-                    HeightRequest="500"
-                    WidthRequest="500">
+                    HeightRequest="1000"
+                    WidthRequest= "1000">
                     <GraphicsView.GestureRecognizers>
                         <PointerGestureRecognizer PointerMoved="PointerChanged"/>
                         <TapGestureRecognizer Tapped="OnTap"/>

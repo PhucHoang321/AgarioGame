@@ -50,7 +50,7 @@ namespace ClientGUI
         {
             worldDrawable = new WorldDrawable(_world, PlaySurface);
             PlaySurface.Drawable = worldDrawable;
-            Timer = new System.Timers.Timer(1000 / 60);
+            Timer = new System.Timers.Timer(1000 / 30);
             Timer.Elapsed += (s, e) => GameStep();
             Timer.Start();
         }
@@ -60,7 +60,9 @@ namespace ClientGUI
             Dispatcher.Dispatch(() =>
             {
                 PlaySurface.Invalidate();
+                fps.Text = "FPS: " + Timer.ToString();
             });
+
         }
         private void PointerChanged(object sender, PointerEventArgs e)
         {
@@ -119,6 +121,7 @@ namespace ClientGUI
                 else if (message.StartsWith(Protocols.CMD_Update_Players))
                 {
                     _world.AddPlayer(message);
+
                 }else if (message.StartsWith(Protocols.CMD_Eaten_Food)) 
                 {
                     _world.RemoveFood(message);
@@ -127,9 +130,19 @@ namespace ClientGUI
                     _world.clientID = long.Parse(message[Protocols.CMD_Player_Object.Length..]);
                 }else if (message.StartsWith(Protocols.CMD_Dead_Players))
                 {
+                    _logger.LogInformation(message);
                     _world.RemovePlayer(message);
-                    _client.Disconnect();
+
+                    if (_world.Players[_world.clientID].isDead) { _client.Disconnect(); }
+                    
                 }
+                Dispatcher.Dispatch(() =>
+                {
+                   
+                    Mass.Text = "Mass: " + _world.Players[_world.clientID].Mass;
+                
+                    // hb.Text += ": " + _world.Players[_world.clientID].
+                });
             }
             catch (Exception ex) 
             { 
@@ -137,10 +150,7 @@ namespace ClientGUI
             }
             
         }
-        public long GetLocalID()
-        {
-            return _localID;
-        }
+
         private void OnDisconnect(Networking channel)
         {
             WelcomeScreen.IsVisible = true;
