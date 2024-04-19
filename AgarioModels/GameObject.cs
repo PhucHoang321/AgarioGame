@@ -49,8 +49,6 @@ namespace AgarioModels
             Mass = mass;
             ARGBColor = argbColor;
             Radius = (float) Math.Sqrt(Mass / Math.PI);
-        }
-
-       
+        }    
     }
 }

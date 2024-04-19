@@ -12,9 +12,7 @@ namespace ClientGUI
         private readonly Dictionary<long, Player> _players;
         private readonly Dictionary<long, Food> _foods;
         private readonly GraphicsView PlaySurface;
-    
-
-        public float _zoomScale = 40;
+        private float _zoomScale = 40;
 
         public WorldDrawable(World world, GraphicsView gv)
         {
@@ -22,7 +20,13 @@ namespace ClientGUI
             _players = world.Players;
             _foods = world.Foods;
             PlaySurface = gv;
+            _zoomScale = 40;
         }
+        public void UpdateZoomScale(float zoomScale)
+        {
+            _zoomScale = zoomScale;
+        }
+
         private void ConvertFromWorldToScreen(
                 in float worldX, in float worldY, in float worldMass,
                 out int screenX, out int screenY, out int playerMass)
@@ -33,76 +37,76 @@ namespace ClientGUI
         }
         public void Draw(ICanvas canvas, RectF dirtyRect)
         {
-            float screenW = (float)PlaySurface.Width;
-            float screenH = (float)PlaySurface.Height;
-            canvas.FillColor = Colors.Green;
-            canvas.FillRectangle(dirtyRect);
+           
+                float screenW = (float)PlaySurface.Width;
+                float screenH = (float)PlaySurface.Height;
+                canvas.FillColor = Colors.Green;
+                canvas.FillRectangle(dirtyRect);
 
-            canvas.FillColor = Colors.White;
-            canvas.FillRectangle(dirtyRect);
+                canvas.FillColor = Colors.White;
+                canvas.FillRectangle(dirtyRect);
 
-            Player client = _world.Players[_world.clientID];
-            float viewPortWidth = client.Radius * _zoomScale;
+                Player client = _world.Players[_world.clientID];
+                float viewPortWidth = client.Radius * _zoomScale;
 
-            BoundedPoint(client, viewPortWidth, out float leftBound, out float rightBound, out float topBound, out float bottomBound);
+                BoundedPoint(client, viewPortWidth, out float leftBound, out float rightBound, out float topBound, out float bottomBound);
 
 
-            lock(_players)
-            {
-                foreach (var player in _players)
+                lock (_players)
                 {
-                    if (!player.Value.isDead)
+                    foreach (var player in _players)
                     {
-                        float playerX = player.Value.Location.X;
-                        float playerY = player.Value.Location.Y;
-                        float playerRadius = player.Value.Radius;
-
-                        if (player.Value.X > leftBound
-                            && player.Value.X < rightBound
-                            && player.Value.Y < bottomBound
-                            && player.Value.Y > topBound)
+                        if (!player.Value.isDead)
                         {
-                            float xOffset = playerX - leftBound;
-                            float yOffset = playerY - topBound;
-                            float xRatio = xOffset / viewPortWidth;
-                            float yRatio = yOffset / viewPortWidth;
+                            float playerX = player.Value.Location.X;
+                            float playerY = player.Value.Location.Y;
+                            float playerRadius = player.Value.Radius;
+
+                            if (player.Value.X > leftBound
+                                && player.Value.X < rightBound
+                                && player.Value.Y < bottomBound
+                                && player.Value.Y > topBound)
+                            {
+                                float xOffset = playerX - leftBound;
+                                float yOffset = playerY - topBound;
+                                float xRatio = xOffset / viewPortWidth;
+                                float yRatio = yOffset / viewPortWidth;
 
 
-                            canvas.FillColor = Color.FromInt(player.Value.ARGBColor);
-                            canvas.FillCircle(xRatio * screenW, yRatio * screenH, playerRadius * screenW / viewPortWidth);
-                            canvas.FontColor = Colors.Black;
-                            canvas.DrawString(player.Value.Name, xRatio * screenW, yRatio * screenH, HorizontalAlignment.Center);
+                                canvas.FillColor = Color.FromInt(player.Value.ARGBColor);
+                                canvas.FillCircle(xRatio * screenW, yRatio * screenH, playerRadius * screenW / viewPortWidth);
+                                canvas.FontColor = Colors.Black;
+                                canvas.DrawString(player.Value.Name, xRatio * screenW, yRatio * screenH, HorizontalAlignment.Center);
 
+                            }
                         }
                     }
                 }
-            }
-            //draw player 
+                //draw player 
 
-            lock (_foods)
-            {
-                foreach (var food in _foods)
+                lock (_foods)
                 {
-                    float foodX = food.Value.Location.X;
-                    float foodY = food.Value.Location.Y;
-                    float foodRadius = food.Value.Radius;
-                    if (food.Value.X > leftBound
-                       && food.Value.X < rightBound
-                       && food.Value.Y < bottomBound
-                       && food.Value.Y > topBound)
+                    foreach (var food in _foods)
                     {
-                        float xOffset = foodX - leftBound;
-                        float yOffset = foodY - topBound;
-                        float xRatio = xOffset / viewPortWidth;
-                        float yRatio = yOffset / viewPortWidth;
+                        float foodX = food.Value.Location.X;
+                        float foodY = food.Value.Location.Y;
+                        float foodRadius = food.Value.Radius;
+                        if (food.Value.X > leftBound
+                           && food.Value.X < rightBound
+                           && food.Value.Y < bottomBound
+                           && food.Value.Y > topBound)
+                        {
+                            float xOffset = foodX - leftBound;
+                            float yOffset = foodY - topBound;
+                            float xRatio = xOffset / viewPortWidth;
+                            float yRatio = yOffset / viewPortWidth;
 
-                        canvas.FillColor = Color.FromInt(food.Value.ARGBColor);
-                        canvas.FillCircle(xRatio * screenW, yRatio * screenH, foodRadius * screenW / viewPortWidth);
-                        canvas.StrokeColor = Colors.Black;
+                            canvas.FillColor = Color.FromInt(food.Value.ARGBColor);
+                            canvas.FillCircle(xRatio * screenW, yRatio * screenH, foodRadius * screenW / viewPortWidth);
+                            canvas.StrokeColor = Colors.Black;
+                        }
                     }
                 }
-            }
-            
         }
 
         private static void BoundedPoint(Player client, float viewPortWidth, out float leftBound, out float rightBound, out float topBound, out float bottomBound)

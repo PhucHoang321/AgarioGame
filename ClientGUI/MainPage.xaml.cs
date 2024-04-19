@@ -73,29 +73,30 @@ namespace ClientGUI
 
             _client.SendAsync(String.Format(Protocols.CMD_Move, (int)gameX, (int)gameY));
         }
+
+
         private void OnTap(object sender, EventArgs e) 
         { 
             
         }
-        private void PanUpdated(object sender, EventArgs e) 
+        private void PanUpdated(object sender, PanUpdatedEventArgs e) 
         {
-            //PanUpdatedEventArgs panEvent = (PanUpdatedEventArgs)e;
+            if (e.StatusType == GestureStatus.Running)
+            {
+                double totalX = e.TotalX;
 
-            //// Check the total distance traveled in the X and Y directions
-            //double totalX = panEvent.TotalX;
-            //double totalY = panEvent.TotalY;
+                _zoomScale += (float)(totalX * 0.009); 
 
-            //// Adjust zoom scale based on the pan gesture
-            //_zoomScale += (float)(totalX * 0.1); // You can adjust the sensitivity of zooming
-
-            //// Ensure the zoom scale doesn't go below a certain threshold (e.g., minimum zoom)
-            //if (_zoomScale < 1)
-            //{
-            //    _zoomScale = 1;
-            //}
-
-            //// Redraw the graphics with the updated zoom scale
-            //PlaySurface.Invalidate();
+                if (_zoomScale < 10)
+                {
+                    _zoomScale = 10;
+                }
+                if (_zoomScale > 250) 
+                {
+                    _zoomScale = 250;
+                }
+                worldDrawable.UpdateZoomScale(_zoomScale);
+            }
         }
         private async void StartGame_Clicked(object sender, EventArgs e)
         {
@@ -140,8 +141,6 @@ namespace ClientGUI
                 {
                    
                     Mass.Text = "Mass: " + _world.Players[_world.clientID].Mass;
-                
-                    // hb.Text += ": " + _world.Players[_world.clientID].
                 });
             }
             catch (Exception ex) 
