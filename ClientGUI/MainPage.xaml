@@ -1,41 +1,56 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ClientGUI.MainPage" Background="Black" 
+             x:Class="ClientGUI.MainPage" Background="LightBlue" 
              >
-    <StackLayout Margin="20">
 
+    <Grid>
         <Frame x:Name="WelcomeScreen" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <StackLayout VerticalOptions="CenterAndExpand"  IsVisible="True" >
-                <Label FontSize= "40" TextColor= "Black" FontAttributes="Bold" Text="AGARIO" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
-                <Entry BackgroundColor="Beige" Placeholder="Enter your name" x:Name="NameEntry" TextColor="Black"/>
-                <Entry BackgroundColor="Beige" Placeholder="Enter host address" x:Name="HostEntry" TextColor="Black"/>
-                <Button Text="Start Game" Clicked="StartGame_Clicked" />
+            <StackLayout VerticalOptions="Center"  IsVisible="True" >
+                <Label FontSize= "40" TextColor= "Black" FontAttributes="Bold" Text="AGARIO" HorizontalOptions="Center"  FontFamily=""  />
+                <Entry WidthRequest="300" BackgroundColor="Beige" Placeholder="Enter your name" x:Name="NameEntry" TextColor="Black"/>
+                <Entry WidthRequest="300" BackgroundColor="Beige" Placeholder="Enter host address" x:Name="HostEntry" TextColor="Black"/>
+                <Button  WidthRequest="300" Text="Start Game" Clicked="StartGame_Clicked" />
+                <ActivityIndicator 
+                        x:Name="Spinner"
+                        IsRunning="True"
+                        IsVisible="False"/>
             </StackLayout>
         </Frame>
-        <Frame  x:Name="GameScreen" IsVisible="False" Padding="5">
-            <StackLayout VerticalOptions="CenterAndExpand">
-                <!-- Add game UI elements here -->
-                <Label Text="Game Screen" HorizontalOptions="Center" />
-                <Label x:Name="Mass" TextColor="White" HorizontalOptions="Center"></Label>
-                <Label x:Name="hb" TextColor="AliceBlue" HorizontalOptions="Center"/>
-                <Label x:Name="fps"    TextColor="AliceBlue" HorizontalOptions="Center"/>
-                
+
+        <Frame x:Name="GameScreen" BackgroundColor="LightBlue" IsVisible="False" Padding="5">
+            <Grid>
+                <!-- Define rows -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+           
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition  />
+                    <ColumnDefinition   />
+                </Grid.ColumnDefinitions>
+                <BoxView Color="Red" Grid.Column="0" ></BoxView>
+                <Label  x:Name="Mass" FontSize="30" TextColor="Black" HorizontalOptions="Center" Grid.Column="0"/>
+                <BoxView Color="White" Grid.Column="1" ></BoxView>
+                <Label x:Name="hb" FontSize="30" Text="Hllo" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
+                <BoxView Color="Blue" Grid.Column="2"  ></BoxView>
+                <Label x:Name="fps" FontSize="30" TextColor="Black" HorizontalOptions="Center" Grid.Column="2"/>
+              
                 <GraphicsView 
-                    x:Name="PlaySurface"
-                    VerticalOptions="Center"                     
-                    HeightRequest="1000"
-                    WidthRequest= "1000">
+                        x:Name="PlaySurface"                                   
+                        HeightRequest="800"
+                        WidthRequest= "800"
+                        Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1">
                     <GraphicsView.GestureRecognizers>
                         <PointerGestureRecognizer PointerMoved="PointerChanged"/>
                         <TapGestureRecognizer Tapped="OnTap"/>
                         <PanGestureRecognizer PanUpdated="PanUpdated"/>
                     </GraphicsView.GestureRecognizers>
-                </GraphicsView> 
-                
-            </StackLayout>
+                </GraphicsView>
+            </Grid>
         </Frame>
-       
-        
-    </StackLayout>
+    </Grid>
+
 </ContentPage>
