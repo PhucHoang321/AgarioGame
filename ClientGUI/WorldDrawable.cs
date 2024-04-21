@@ -58,10 +58,9 @@ namespace ClientGUI
 
             float screenW = (float)PlaySurface.Width;
             float screenH = (float)PlaySurface.Height;
-            canvas.FillColor = Colors.Green;
-            canvas.FillRectangle(dirtyRect);
 
             canvas.FillColor = Colors.White;
+            canvas.StrokeColor = Colors.Black;
             canvas.FillRectangle(dirtyRect);
 
             Player client = _world.Players[_world.clientID];
@@ -69,7 +68,7 @@ namespace ClientGUI
 
             BoundedPoint(client, viewPortWidth, out float leftBound, out float rightBound, out float topBound, out float bottomBound);
 
-
+            // Draw player
             lock (_players)
             {
                 foreach (var player in _players)
@@ -92,6 +91,7 @@ namespace ClientGUI
 
 
                             canvas.FillColor = Color.FromInt(player.Value.ARGBColor);
+                            canvas.StrokeColor = Colors.Black;
                             canvas.FillCircle(xRatio * screenW, yRatio * screenH, playerRadius * screenW / viewPortWidth);
                             canvas.FontColor = Colors.Black;
                             canvas.DrawString(player.Value.Name, xRatio * screenW, yRatio * screenH, HorizontalAlignment.Center);
@@ -100,7 +100,7 @@ namespace ClientGUI
                     }
                 }
             }
-            //draw player 
+            //draw food
             if (_foods is not null)
             {
                 lock (_foods)

@@ -31,17 +31,19 @@
                     <ColumnDefinition  />
                     <ColumnDefinition   />
                 </Grid.ColumnDefinitions>
+                <Entry x:Name="myEntry"  Text="aaa" TextChanged="Entry_TextChanged" ></Entry>
                 <BoxView Color="Red" Grid.Column="0" ></BoxView>
                 <Label  x:Name="Mass" FontSize="30" TextColor="Black" HorizontalOptions="Center" Grid.Column="0"/>
                 <BoxView Color="White" Grid.Column="1" ></BoxView>
                 <Label x:Name="hb" FontSize="30" Text="Hllo" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
                 <BoxView Color="Blue" Grid.Column="2"  ></BoxView>
                 <Label x:Name="fps" FontSize="30" TextColor="Black" HorizontalOptions="Center" Grid.Column="2"/>
-              
+                
+                
                 <GraphicsView 
                         x:Name="PlaySurface"                                   
-                        HeightRequest="800"
-                        WidthRequest= "800"
+                        HeightRequest="500"
+                        WidthRequest= "500"
                         Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1">
                     <GraphicsView.GestureRecognizers>
                         <PointerGestureRecognizer PointerMoved="PointerChanged"/>

@@ -84,7 +84,7 @@ namespace ClientGUI
         {
             worldDrawable = new WorldDrawable(_world, PlaySurface);
             PlaySurface.Drawable = worldDrawable;
-            Timer = new System.Timers.Timer(1000 / 30);
+            Timer = new System.Timers.Timer(1000 / 60);
                Timer.Interval = TargetFPS;
             Timer.Elapsed += (s, e) => GameStep();
             Timer.Start();
@@ -110,8 +110,9 @@ namespace ClientGUI
         private void PointerChanged(object sender, PointerEventArgs e)
         {          
                 Point pointerPosition = (Point)e.GetPosition(PlaySurface);
-                float? gameX = (float)pointerPosition.X * (float)_world.Width / (float)PlaySurface.Width;
-                float? gameY = (float)pointerPosition.Y * (float)_world.Height / (float)PlaySurface.Height;
+                float? gameX = (float)pointerPosition.X / (float)PlaySurface.Width * (float)_world.Width;
+                float? gameY = (float)pointerPosition.Y / (float)PlaySurface.Height * (float)_world.Height;
+                myEntry.Focus();
                 _client.SendAsync(String.Format(Protocols.CMD_Move, (int)gameX, (int)gameY));                  
         }
 
@@ -121,8 +122,8 @@ namespace ClientGUI
         /// <param name="sender">The object that raised the event.</param>
         /// <param name="e">The event arguments.</param>
         private void OnTap(object sender, EventArgs e) 
-        { 
-             _client.SendAsync(String.Format(Protocols.CMD_Split, this.X, this.Y));
+        {
+            //_client.SendAsync(String.Format(Protocols.CMD_Split, this.X, this.Y));
         }
 
         /// <summary>
@@ -157,14 +158,27 @@ namespace ClientGUI
         /// <param name="e">The event arguments.</param>
         private async void StartGame_Clicked(object sender, EventArgs e)
         {
-            Spinner.IsVisible = true;
-            await _client.ConnectAsync(HostEntry.Text, 11000);      
-            WelcomeScreen.IsVisible = false;
-           
-            Spinner.IsVisible = false;
-            GameScreen.IsVisible = true;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(NameEntry.Text))
+                {
+                    await DisplayAlert("Warning", "Please enter a name.", "OK");
+                    return;
+                }
+                Spinner.IsVisible = true;
+                await _client.ConnectAsync(HostEntry.Text, 11000);
+                WelcomeScreen.IsVisible = false;
 
-            await _client.HandleIncomingDataAsync(true);       
+                Spinner.IsVisible = false;
+                GameScreen.IsVisible = true;
+
+                await _client.HandleIncomingDataAsync(true);
+                
+            }
+            catch (Exception ex) 
+            {
+                await DisplayAlert("Warning", "Error Connecting, please try again", "OK");
+            }
         }
 
 
@@ -173,7 +187,7 @@ namespace ClientGUI
         /// </summary>
         /// <param name="channel">The networking channel used for communication.</param>
         /// <param name="message">The message received from the server.</param>
-        private void OnMessage(Networking channel, string message)
+        private async void OnMessage(Networking channel, string message)
         {
             try
             {              
@@ -194,7 +208,10 @@ namespace ClientGUI
                 }else if (message.StartsWith(Protocols.CMD_Dead_Players))
                 {                    
                     _world.MarkPlayersAsDead(message);
-                    if (_world.Players[_world.clientID].isDead) { _client.Disconnect(); }                   
+                    if (_world.Players[_world.clientID].isDead)
+                    {
+                        ShowDeadAlert();
+                    }                   
                 }else if (message.StartsWith(Protocols.CMD_HeartBeat))
                 {
                     message = message[Protocols.CMD_HeartBeat.Length..];
@@ -205,12 +222,12 @@ namespace ClientGUI
                 }
                 Dispatcher.Dispatch(() =>
                 {
-                   
                     Mass.Text = "Mass: " + _world.Players[_world.clientID].Mass;
                 });
             }
             catch (Exception ex) 
             { 
+                _client.Disconnect();
                 _logger?.LogDebug(ex.Message, ex);
             }            
         }
@@ -220,8 +237,13 @@ namespace ClientGUI
         /// </summary>
         /// <param name="channel">The networking channel used for communication.</param>
 
-        private void OnDisconnect(Networking channel)
+        private async void OnDisconnect(Networking channel)
         {
+            string title = "Disconnect from server";
+            string message = "Press OK to go back to main screen";
+
+            await DisplayAlert(title, message, "OK");
+           
             WelcomeScreen.IsVisible = true;
             GameScreen.IsVisible = false;
         }
@@ -232,9 +254,32 @@ namespace ClientGUI
         /// <param name="channel">The networking channel used for communication.</param>
 
         private void OnConnect(Networking channel)
-        {          
+        {
             string name = NameEntry.Text;
             _client?.SendAsync(String.Format(Protocols.CMD_Start_Game, name));
+        }
+
+        private async void ShowDeadAlert()
+        {
+            string title = "GAME OVER";
+            string message = "Your mass: " + _world.Players[_world.clientID].Mass + "\n" + "Play again?";
+
+            bool result = await DisplayAlert(title, message, "Play again", "Quit");
+
+            if (result)
+            {
+                string name = NameEntry.Text;
+                _client?.SendAsync(String.Format(Protocols.CMD_Start_Game, name));
+            }
+            else
+            {
+                _client.Disconnect();
+            }
+        }
+
+        private void Entry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _client.SendAsync(String.Format(Protocols.CMD_Split, X, Y));
         }
     }
 
