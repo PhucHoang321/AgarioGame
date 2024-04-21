@@ -42,14 +42,8 @@ namespace ClientGUI
         /// </summary>
         private readonly ILogger? _logger;
 
-        /// <summary>
-        /// Gets or sets the target frames per second (FPS) for the application.
-        /// </summary>
-        /// <remarks>
-        /// This property determines the desired frame rate at which the application should render graphics.
-        /// </remarks>
-        public double TargetFPS { get; private set; } = 30;
-
+        private Stopwatch watch;
+        private TimeSpan ts;
         /// <summary>
         /// Initializes a new instance of the MainPage class with the specified logger.
         /// </summary>
@@ -85,7 +79,6 @@ namespace ClientGUI
             worldDrawable = new WorldDrawable(_world, PlaySurface);
             PlaySurface.Drawable = worldDrawable;
             Timer = new System.Timers.Timer(1000 / 60);
-               Timer.Interval = TargetFPS;
             Timer.Elapsed += (s, e) => GameStep();
             Timer.Start();
         }
@@ -98,7 +91,7 @@ namespace ClientGUI
             Dispatcher.Dispatch(() =>
             {
                 PlaySurface.Invalidate();
-                fps.Text = "FPS: " + Timer?.Interval;
+                fps.Text = $"Time Alive: {ts}";
             });
         }
 
@@ -123,7 +116,7 @@ namespace ClientGUI
         /// <param name="e">The event arguments.</param>
         private void OnTap(object sender, EventArgs e) 
         {
-            //_client.SendAsync(String.Format(Protocols.CMD_Split, this.X, this.Y));
+            _client.SendAsync(String.Format(Protocols.CMD_Split, this.X, this.Y));
         }
 
         /// <summary>
@@ -173,7 +166,9 @@ namespace ClientGUI
                 GameScreen.IsVisible = true;
 
                 await _client.HandleIncomingDataAsync(true);
-                
+                watch = Stopwatch.StartNew();
+                TimeSpan ts = watch.Elapsed;
+
             }
             catch (Exception ex) 
             {
@@ -227,7 +222,6 @@ namespace ClientGUI
             }
             catch (Exception ex) 
             { 
-                _client.Disconnect();
                 _logger?.LogDebug(ex.Message, ex);
             }            
         }
@@ -257,12 +251,13 @@ namespace ClientGUI
         {
             string name = NameEntry.Text;
             _client?.SendAsync(String.Format(Protocols.CMD_Start_Game, name));
+            watch = Stopwatch.StartNew();
         }
 
         private async void ShowDeadAlert()
         {
             string title = "GAME OVER";
-            string message = "Your mass: " + _world.Players[_world.clientID].Mass + "\n" + "Play again?";
+            string message = $"Your mass: {_world.Players[_world.clientID].Mass}\nTime Alive: {watch.Elapsed.Seconds} seconds\nPlay again?";
 
             bool result = await DisplayAlert(title, message, "Play again", "Quit");
 
@@ -270,6 +265,7 @@ namespace ClientGUI
             {
                 string name = NameEntry.Text;
                 _client?.SendAsync(String.Format(Protocols.CMD_Start_Game, name));
+                watch = Stopwatch.StartNew();
             }
             else
             {
@@ -280,6 +276,16 @@ namespace ClientGUI
         private void Entry_TextChanged(object sender, TextChangedEventArgs e)
         {
             _client.SendAsync(String.Format(Protocols.CMD_Split, X, Y));
+        }
+
+        private async void How_To_Play(object sender, EventArgs e) 
+        {
+            string title = "How to play";
+            string message = "1. Use your cursor to guide your blob, finger for phone user.\n" 
+                + "2. Eat food and grow, avoid player that is bigger than you until you grow bigger\n"
+                + "3. You can split into smaller blob when your mass reach 1000\n"
+                + "4. Press split, space bar or left click to split";
+            await DisplayAlert(title, message, "OK");
         }
     }
 

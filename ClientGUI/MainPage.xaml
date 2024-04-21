@@ -11,6 +11,7 @@
                 <Entry WidthRequest="300" BackgroundColor="Beige" Placeholder="Enter your name" x:Name="NameEntry" TextColor="Black"/>
                 <Entry WidthRequest="300" BackgroundColor="Beige" Text="localhost" x:Name="HostEntry" TextColor="Black"/>
                 <Button  WidthRequest="300" Text="Start Game" Clicked="StartGame_Clicked" />
+                <Button  WidthRequest="300" Text="How to play" Clicked="How_To_Play" />
                 <ActivityIndicator 
                         x:Name="Spinner"
                         IsRunning="True"
