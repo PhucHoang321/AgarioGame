@@ -15,7 +15,7 @@
 	We designed to make it look calmly not so bright and not so dark.
 	The welcome page GUI is looking very good.
 # Overview of the Agario functionality
-	-N/A-
+	Let the player eat foods, other players, also spit when reach the requirement mass. 
 # Consulted Peers:
 	We talked with Trenton,Ted and Shadrach.
 # Comments to Agario:
@@ -26,9 +26,9 @@
 	Assignment Eight: Predicted Hour:35   Actual Hour:27 (not included the 3 steps tutorial)
 	We think our time predicted is getting very good. I think because of the tutorials that give us the better time prediction.
 # Partnerships
-	Phuc Hoang: 1 
-	Chanphone Visathip: 1 
-	Pair programming hour: 18
+	Phuc Hoang: 3
+	Chanphone Visathip: 3 
+	Pair programming hour: 21
 	Debug hour: 3
 	We was struggling on try to get the view portal to show correctly. 
 
