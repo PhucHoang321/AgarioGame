@@ -1,14 +1,23 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Text.Json;
-
+/// <summary>
+/// Author:    Phuc Hoang
+/// Partner:   Chanphone Visathip
+/// Date:      7-April-2024
+/// Course:    CS 3500, University of Utah, School of Computing
+/// Copyright: CS 3500 and Phuc Hoang - This work may not 
+///            be copied for use in Academic Coursework.
+///
+/// I, Phuc Hoang,and Chanphone Visathip certify that I wrote this code from scratch and
+/// did not copy it in part or whole from another source.  All 
+/// references used in the completion of the assignments are cited 
+/// in my README file.
+///
+/// File Contents
+/// This file contains the definition of the World class, which represents the game world in the Agario game.
+/// It stores information about the players and food items in the game, as well as provides methods for updating game state.
+/// </summary>
 namespace AgarioModels {
-    //the world Width and Height(please use read only 'constants') defaulting to 5000 by 5000
-    //A list of players in the game.
-    //A list of food in the game.
-    //You may of course store additional information.How your code chooses to store the game objects is an important SE design decision.
-
-    //A logger object.
-
     public class World
     {
         /// <summary>

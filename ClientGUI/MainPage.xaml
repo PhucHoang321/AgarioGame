@@ -9,9 +9,10 @@
             <StackLayout VerticalOptions="Center"  IsVisible="True" >
                 <Label FontSize= "40" TextColor= "Black" FontAttributes="Bold" Text="AGARIO" HorizontalOptions="Center"  FontFamily=""  />
                 <Entry WidthRequest="300" BackgroundColor="Beige" Placeholder="Enter your name" x:Name="NameEntry" TextColor="Black"/>
-                <Entry WidthRequest="300" BackgroundColor="Beige" Text="localhost" x:Name="HostEntry" TextColor="Black"/>
-                <Button  WidthRequest="300" Text="Start Game" Clicked="StartGame_Clicked" />
-                <Button  WidthRequest="300" Text="How to play" Clicked="How_To_Play" />
+                <Entry  WidthRequest="300" BackgroundColor="Beige" Text="localhost" x:Name="HostEntry" TextColor="Black"/>
+                <Button BorderColor="Black" BorderWidth="1"  WidthRequest="300" Text="Start Game" Clicked="StartGame_Clicked" />
+                
+                <Button BorderColor="Black" BorderWidth="1"  WidthRequest="300" Text="How to play" Clicked="How_To_Play" />
                 <ActivityIndicator 
                         x:Name="Spinner"
                         IsRunning="True"
@@ -21,30 +22,29 @@
 
         <Frame x:Name="GameScreen" BackgroundColor="LightBlue" IsVisible="False" Padding="5">
             <Grid>
-                <!-- Define rows -->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
-                    <RowDefinition />
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
            
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition  />
-                    <ColumnDefinition   />
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                 
                 </Grid.ColumnDefinitions>
                 <Entry x:Name="myEntry"  Text="aaa" TextChanged="Entry_TextChanged" ></Entry>
-                <BoxView Color="Red" Grid.Column="0" ></BoxView>
+                <BoxView Color="Beige" Grid.Column="0" ></BoxView>
                 <Label  x:Name="Mass" FontSize="30" TextColor="Black" HorizontalOptions="Center" Grid.Column="0"/>
-                <BoxView Color="White" Grid.Column="1" ></BoxView>
+                <BoxView Color="Beige" Grid.Column="1" ></BoxView>
                 <Label x:Name="hb" FontSize="30" Text="Hllo" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
-                <BoxView Color="Blue" Grid.Column="2"  ></BoxView>
-                <Label x:Name="fps" FontSize="30" TextColor="Black" HorizontalOptions="Center" Grid.Column="2"/>
-                
-                
+                <BoxView Color="Beige" Grid.Column="2"  ></BoxView>
+                <Label x:Name="playerLocation" FontSize="30" TextColor="Black" HorizontalOptions="Center" Grid.Column="2"/>
+               
                 <GraphicsView 
                         x:Name="PlaySurface"                                   
-                        HeightRequest="500"
-                        WidthRequest= "500"
+                        HeightRequest="800"
+                        WidthRequest= "800"
                         Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1">
                     <GraphicsView.GestureRecognizers>
                         <PointerGestureRecognizer PointerMoved="PointerChanged"/>

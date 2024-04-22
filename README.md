@@ -1,15 +1,19 @@
-<summary>
-Author:     Phuc Hoang
-Partner:    Chanphone Visathip
-Start Date: 23-Mar-2024
-Course:     CS 3500, University of Utah, School of Computing
-GitHub ID:  PhucHoang123
-Repo:		https://github.com/uofu-cs3500-spring24/assignment-eight-agario-v_tekkkkk
-Commit Date:4-April-2024 11:25pm
-Solution:	Agario
-Copyright:  CS 3500 and Phuc Hoang and Chanphone Visathip - This work may not be copied for use in Academic Coursework.
-</summary>
+# Agario
+```
+	Author:     Phuc Hoang
+	Partner:    Chanphone Visathip
+	Start Date: 7-April-2024
+	Course:     CS 3500, University of Utah, School of Computing
+	GitHub ID:  PhucHoang123
+	Repo:		https://github.com/uofu-cs3500-spring24/assignment-eight-agario-v_tekkkkk
+	Commit Date:21-April-2024 11:25pm
+	Solution:	Agario
+	Copyright:  CS 3500 and Phuc Hoang and Chanphone Visathip - This work may not be copied for use in Academic Coursework.
+```
 
+# User Interface and Game Design Decisions
+	We designed to make it look calmly not so bright and not so dark.
+	The welcome page GUI is looking very good.
 # Overview of the Agario functionality
 	-N/A-
 # Consulted Peers:
@@ -19,8 +23,8 @@ Copyright:  CS 3500 and Phuc Hoang and Chanphone Visathip - This work may not be
 # Assignment Specific Topics
 	-none-
 # Time Expenditures:
-	Assignment Eight: Predicted Hour:30   Actual Hour:20 (not included the 3 steps tutorial)
-
+	Assignment Eight: Predicted Hour:35   Actual Hour:27 (not included the 3 steps tutorial)
+	We think our time predicted is getting very good. I think because of the tutorials that give us the better time prediction.
 # Partnerships
 	Phuc Hoang: 1 
 	Chanphone Visathip: 1 
@@ -33,10 +37,7 @@ Copyright:  CS 3500 and Phuc Hoang and Chanphone Visathip - This work may not be
 		We use lots of small comment on some methods. That tell the reader know what that actual do.
 	2.Single Responsibility Principle:
 		For example, in MainPage.xaml.cs we have it do all the GUI work,
-		and in World Class we have it handle all the incoming data such as, add player, add food,e.t.c..
-
-		
-	
+		and in World Class we have it handle all the incoming data such as, add player, add food,e.t.c..	
 # References
 	1.Piazza post
 	2.ChatGPT - https://chat.openai.com/

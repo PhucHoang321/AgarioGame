@@ -1,6 +1,23 @@
 ﻿using AgarioModels;
+/// <summary>
+/// Author:    Phuc Hoang
+/// Partner:   Chanphone Visathip
+/// Date:      7-April-2024
+/// Course:    CS 3500, University of Utah, School of Computing
+/// Copyright: CS 3500 and Phuc Hoang - This work may not 
+///            be copied for use in Academic Coursework.
+///
+/// I, Phuc Hoang, and Chanphone Visathip certify that I wrote this code from scratch and
+/// did not copy it in part or whole from another source. All 
+/// references used in the completion of the assignments are cited 
+/// in my README file.
+///
+/// File Contents:
+/// This file contains the definition of the WorldDrawable class, which is responsible for rendering the game world in the GUI.
+/// It draws players and food items on the screen based on the provided world data and zoom scale.
+/// </summary>
 namespace ClientGUI
-{
+{   
     public class WorldDrawable : IDrawable
     {
         /// <summary>
@@ -62,13 +79,13 @@ namespace ClientGUI
             canvas.FillColor = Colors.White;
             canvas.StrokeColor = Colors.Black;
             canvas.FillRectangle(dirtyRect);
-
+            canvas.StrokeSize = 3;
+         
             Player client = _world.Players[_world.clientID];
             float viewPortWidth = client.Radius * _zoomScale;
 
             BoundedPoint(client, viewPortWidth, out float leftBound, out float rightBound, out float topBound, out float bottomBound);
 
-            // Draw player
             lock (_players)
             {
                 foreach (var player in _players)
@@ -89,9 +106,9 @@ namespace ClientGUI
                             float xRatio = xOffset / viewPortWidth;
                             float yRatio = yOffset / viewPortWidth;
 
-
                             canvas.FillColor = Color.FromInt(player.Value.ARGBColor);
                             canvas.StrokeColor = Colors.Black;
+                            canvas.DrawCircle(xRatio * screenW, yRatio * screenH, playerRadius * screenW / viewPortWidth);
                             canvas.FillCircle(xRatio * screenW, yRatio * screenH, playerRadius * screenW / viewPortWidth);
                             canvas.FontColor = Colors.Black;
                             canvas.DrawString(player.Value.Name, xRatio * screenW, yRatio * screenH, HorizontalAlignment.Center);
@@ -99,8 +116,7 @@ namespace ClientGUI
                         }
                     }
                 }
-            }
-            //draw food
+            }       
             if (_foods is not null)
             {
                 lock (_foods)
@@ -127,7 +143,6 @@ namespace ClientGUI
                     }
                 }
             }
-
         }
 
         /// <summary>

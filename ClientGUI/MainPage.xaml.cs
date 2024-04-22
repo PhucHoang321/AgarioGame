@@ -2,6 +2,24 @@
 using Communications;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+/// <summary>
+/// Author:    Phuc Hoang
+/// Partner:   Chanphone Visathip
+/// Date:      7-April-2024
+/// Course:    CS 3500, University of Utah, School of Computing
+/// Copyright: CS 3500 and Phuc Hoang - This work may not 
+///            be copied for use in Academic Coursework.
+///
+/// I, Phuc Hoang,and Chanphone Visathip certify that I wrote this code from scratch and
+/// did not copy it in part or whole from another source.  All 
+/// references used in the completion of the assignments are cited 
+/// in my README file.
+///
+/// File Contents
+/// This file contains the definition of the MainPage class, which serves as the main page of the Agario game client.
+/// It handles user interactions, such as pointer movements and tap events, and communicates with the server using the Networking class.
+/// The MainPage class manages game logic, including rendering the game world, updating game state, and handling connection/disconnection events.    
+/// </summary>
 namespace ClientGUI
 {
     public partial class MainPage : ContentPage
@@ -42,8 +60,8 @@ namespace ClientGUI
         /// </summary>
         private readonly ILogger? _logger;
 
-        private Stopwatch watch;
-        private TimeSpan ts;
+        private Stopwatch? watch;
+      
         /// <summary>
         /// Initializes a new instance of the MainPage class with the specified logger.
         /// </summary>
@@ -90,8 +108,7 @@ namespace ClientGUI
         {
             Dispatcher.Dispatch(() =>
             {
-                PlaySurface.Invalidate();
-                fps.Text = $"Time Alive: {ts}";
+                PlaySurface.Invalidate();                            
             });
         }
 
@@ -103,10 +120,16 @@ namespace ClientGUI
         private void PointerChanged(object sender, PointerEventArgs e)
         {          
                 Point pointerPosition = (Point)e.GetPosition(PlaySurface);
-                float? gameX = (float)pointerPosition.X / (float)PlaySurface.Width * (float)_world.Width;
-                float? gameY = (float)pointerPosition.Y / (float)PlaySurface.Height * (float)_world.Height;
+                //float? gameX = (float)pointerPosition.X / (float)PlaySurface.Width * (float)_world.Width;
+                //float? gameY = (float)pointerPosition.Y / (float)PlaySurface.Height * (float)_world.Height;
+                int? gameX = (int)pointerPosition.X * (int)_world.Width / (int)PlaySurface.Width;
+                int? gameY = (int)pointerPosition.Y * (int)_world.Height / (int)PlaySurface.Height;
                 myEntry.Focus();
-                _client.SendAsync(String.Format(Protocols.CMD_Move, (int)gameX, (int)gameY));                  
+                _client.SendAsync(String.Format(Protocols.CMD_Move, (int)gameX, (int)gameY));
+                Dispatcher.Dispatch(() =>
+                {
+                    playerLocation.Text = $"X: " + _world.Players[_world.clientID].X + " Y: " + _world.Players[_world.clientID].Y;                 
+                });           
         }
 
         /// <summary>
@@ -161,21 +184,16 @@ namespace ClientGUI
                 Spinner.IsVisible = true;
                 await _client.ConnectAsync(HostEntry.Text, 11000);
                 WelcomeScreen.IsVisible = false;
-
                 Spinner.IsVisible = false;
                 GameScreen.IsVisible = true;
-
-                await _client.HandleIncomingDataAsync(true);
-                watch = Stopwatch.StartNew();
+                await _client.HandleIncomingDataAsync(true);               
                 TimeSpan ts = watch.Elapsed;
-
             }
-            catch (Exception ex) 
+            catch (Exception) 
             {
                 await DisplayAlert("Warning", "Error Connecting, please try again", "OK");
             }
         }
-
 
         /// <summary>
         /// Event handler for incoming messages from the server, processes and updates game state accordingly.
@@ -217,6 +235,7 @@ namespace ClientGUI
                 }
                 Dispatcher.Dispatch(() =>
                 {
+                  
                     Mass.Text = "Mass: " + _world.Players[_world.clientID].Mass;
                 });
             }
