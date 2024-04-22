@@ -2,6 +2,7 @@
 using Communications;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
 /// <summary>
 /// Author:    Phuc Hoang
 /// Partner:   Chanphone Visathip
@@ -60,6 +61,9 @@ namespace ClientGUI
         /// </summary>
         private readonly ILogger? _logger;
 
+        /// <summary>
+        /// Stopwatch to keep track of alive time
+        /// </summary>
         private Stopwatch? watch;
       
         /// <summary>
@@ -120,15 +124,13 @@ namespace ClientGUI
         private void PointerChanged(object sender, PointerEventArgs e)
         {          
                 Point pointerPosition = (Point)e.GetPosition(PlaySurface);
-                //float? gameX = (float)pointerPosition.X / (float)PlaySurface.Width * (float)_world.Width;
-                //float? gameY = (float)pointerPosition.Y / (float)PlaySurface.Height * (float)_world.Height;
                 int? gameX = (int)pointerPosition.X * (int)_world.Width / (int)PlaySurface.Width;
                 int? gameY = (int)pointerPosition.Y * (int)_world.Height / (int)PlaySurface.Height;
                 myEntry.Focus();
                 _client.SendAsync(String.Format(Protocols.CMD_Move, (int)gameX, (int)gameY));
                 Dispatcher.Dispatch(() =>
                 {
-                    playerLocation.Text = $"X: " + _world.Players[_world.clientID].X + " Y: " + _world.Players[_world.clientID].Y;                 
+                    playerLocation.Text = $"Player Location X: " + _world.Players[_world.clientID].X + " Y: " + _world.Players[_world.clientID].Y;                 
                 });           
         }
 
@@ -138,6 +140,16 @@ namespace ClientGUI
         /// <param name="sender">The object that raised the event.</param>
         /// <param name="e">The event arguments.</param>
         private void OnTap(object sender, EventArgs e) 
+        {
+            _client.SendAsync(String.Format(Protocols.CMD_Split, this.X, this.Y));
+        }
+
+        /// <summary>
+        /// Button for spliting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void split(object sender, EventArgs e) 
         {
             _client.SendAsync(String.Format(Protocols.CMD_Split, this.X, this.Y));
         }
@@ -273,6 +285,9 @@ namespace ClientGUI
             watch = Stopwatch.StartNew();
         }
 
+        /// <summary>
+        /// Helper method for showing dead player
+        /// </summary>
         private async void ShowDeadAlert()
         {
             string title = "GAME OVER";
@@ -292,11 +307,21 @@ namespace ClientGUI
             }
         }
 
+        /// <summary>
+        /// Linked with space bar to call for splitting
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Entry_TextChanged(object sender, TextChangedEventArgs e)
         {
             _client.SendAsync(String.Format(Protocols.CMD_Split, X, Y));
         }
 
+        /// <summary>
+        /// Helper method for showing how to play alert
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void How_To_Play(object sender, EventArgs e) 
         {
             string title = "How to play";

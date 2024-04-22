@@ -24,14 +24,15 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-           
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
-                 
+
                 </Grid.ColumnDefinitions>
                 <Entry x:Name="myEntry"  Text="aaa" TextChanged="Entry_TextChanged" ></Entry>
                 <BoxView Color="Beige" Grid.Column="0" ></BoxView>
@@ -40,18 +41,20 @@
                 <Label x:Name="hb" FontSize="30" Text="Hllo" TextColor="Black" HorizontalOptions="Center" Grid.Column="1"/>
                 <BoxView Color="Beige" Grid.Column="2"  ></BoxView>
                 <Label x:Name="playerLocation" FontSize="30" TextColor="Black" HorizontalOptions="Center" Grid.Column="2"/>
-               
+
                 <GraphicsView 
                         x:Name="PlaySurface"                                   
                         HeightRequest="800"
                         WidthRequest= "800"
-                        Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1">
+                        Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Grid.RowSpan="3">
                     <GraphicsView.GestureRecognizers>
                         <PointerGestureRecognizer PointerMoved="PointerChanged"/>
                         <TapGestureRecognizer Tapped="OnTap"/>
                         <PanGestureRecognizer PanUpdated="PanUpdated"/>
                     </GraphicsView.GestureRecognizers>
                 </GraphicsView>
+                
+                <Button BorderColor="Black" BorderWidth="1" HeightRequest="10" WidthRequest="100" Text="Split" Clicked="split" Grid.Row="1" Grid.Column = "1" />
             </Grid>
         </Frame>
     </Grid>
